@@ -10,7 +10,7 @@ function AdminDashBoard() {
 
   const adminLeftSide = () => {
     return (
-      <div className="bg-info rounded p-2">
+      <div className="bg-info rounded shadow p-2">
         <h2 className="card bg-warning text-dark p-3">Admin Navigation</h2>
         <div className="text-left p-2">
           <div>

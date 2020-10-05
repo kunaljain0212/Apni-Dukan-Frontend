@@ -157,7 +157,7 @@ const UpdateProduct = () => {
       <Button variant="light">
         <Link
           style={{ textDecoration: "none", color: "black" }}
-          to="/admin/dashboard"
+          to="/admin/products"
         >
           Go Back
         </Link>

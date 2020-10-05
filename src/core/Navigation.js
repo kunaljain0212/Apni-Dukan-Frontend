@@ -56,7 +56,8 @@ function Navigation({ history, changeMode, initialMode }) {
             >
               Cart
             </Link>
-            {isAuthenticated() && isAuthenticated().role === 0 && (
+            {
+              isAuthenticated() && isAuthenticated().role === 0 && (
               <Link
                 style={currentTab(history, "/user/dashboard")}
                 className="nav-link"

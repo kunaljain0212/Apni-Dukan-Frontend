@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import Navigation from "./Navigation";
 import "../styles.css";
 import { useEffect } from "react";
@@ -62,24 +61,9 @@ const Base = ({
           {children}
         </div>
       </div>
-      <footer className="footer bg-dark">
-        <div className="container-fluid bg-info text-white py-1 d-flex justify-content-center">
-          <h4 className="py-2 px-2">
-            If you got any questions, feel free to reach out!
-          </h4>
-          <div className="Cus">
-            <button className="ContactUs btn btn-warning btn-lg">
-              <Link
-                to="/contactus"
-                style={{ textDecoration: "none", color: "#000" }}
-              >
-                Contact Us
-              </Link>
-            </button>
-          </div>
-        </div>
-        <div className="container-fluid text-center">
-          <span className="text-muted">
+      <footer className="sticky-bottom footer bg-dark">
+        <div className="container-fluid bg-info text-center">
+          <span className="text-light">
             Made with{" "}
             <span role="img" aria-label="heart">
               ❤️

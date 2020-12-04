@@ -107,7 +107,7 @@ const AddCategory = () => {
       description="Add a new category for products"
     >
       <div className="p-3">
-        <div className="container bg-info rounded p-4">{myCategoryForm()}</div>
+        <div className="container bg-info shadow rounded p-4">{myCategoryForm()}</div>
       </div>
     </Base>
   );

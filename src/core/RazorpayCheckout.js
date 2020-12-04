@@ -1,6 +1,6 @@
-import React, {  useState } from "react";
+import React from "react";
 import { isAuthenticated } from "../auth/helper";
-import { cartEmpty} from "./helper/cartHelper";
+import { cartEmpty } from "./helper/cartHelper";
 import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { KEY_ID, API } from "../backend";
@@ -11,12 +11,12 @@ const RazorpayCheckout = ({
   setReload = (f) => f,
   reload = undefined,
 }) => {
-  const [data, setData] = useState({
-    loading: false,
-    success: false,
-    error: "",
-    address: "",
-  });
+  // const [data, setData] = useState({
+  //   loading: false,
+  //   success: false,
+  //   error: "",
+  //   address: "",
+  // });
 
   const token = isAuthenticated() && isAuthenticated().token;
   const userId = isAuthenticated() && isAuthenticated()._id;
@@ -25,11 +25,13 @@ const RazorpayCheckout = ({
 
   const totalAmount = () => {
     let amount = 0;
-    products.map((p) => {
+    products.forEach((p) => {
       amount += p.count * p.item.price;
     });
     return amount;
   };
+
+  // console.log(totalAmount());
 
   const displayRazorpay = async () => {
     const res = await loadRazorpay(
@@ -57,7 +59,7 @@ const RazorpayCheckout = ({
       body: JSON.stringify(paymentInfo),
     }).then((t) => t.json());
 
-    console.log(data);
+    // console.log(data);
 
     const options = {
       key: KEY_ID,

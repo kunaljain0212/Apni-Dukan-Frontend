@@ -30,7 +30,7 @@ const ReusableCard = ({
       }
     }
   };
-
+//  console.log(product)
   useEffect(() => {
     // console.log("I ran CARD");
     getCount();
@@ -54,16 +54,26 @@ const ReusableCard = ({
   const showAddToCart = (addToCart) => {
     return (
       addToCart && (
-        <Button
-          onClick={() => {
-            sendToCart();
-            setReload(!reload);
-          }}
-          variant="success"
-          className="p-1 form-control"
-        >
-          Add to Cart
-        </Button>
+        <div className="d-flex">
+          <Button
+            onClick={() => {
+              sendToCart();
+              setReload(!reload);
+            }}
+            variant="success"
+            className="p-1 m-1 form-control"
+          >
+            Add to Cart
+          </Button>
+
+          {count !== 0 && (
+            <div>
+              <p className="btn btn-warning rounded m-1 p-1 form-control">
+                {count}
+              </p>
+            </div>
+          )}
+        </div>
       )
     );
   };
@@ -95,9 +105,11 @@ const ReusableCard = ({
   // console.log(description);
 
   return (
-    <Card className="text-dark border border-info" style={{ height: "100%" }}>
-      <Card.Title className="bg-warning p-2">{product.name}</Card.Title>
-      <div className="p-2">
+    <Card className="text-dark rounded shadow" style={{ height: "100%" }}>
+      <Card.Title className="bg-info rounded text-white p-2">
+        {product.name}
+      </Card.Title>
+      <div className="d-flex justify-content-center p-2">
         <ImageApiCall product={product} />
       </div>
       <Card.Body>
@@ -114,14 +126,6 @@ const ReusableCard = ({
         </p>
         <br />
         <p className="btn btn-info rounded  btn-sm px-4">₹ {product.price}</p>
-        {count !== 0 && (
-          <div>
-            <br />
-            <p className="btn btn-warning rounded  btn-sm px-4">
-              Cart count : {count}
-            </p>
-          </div>
-        )}
       </Card.Body>
       <Card.Footer>
         {showAddToCart(addToCart)}

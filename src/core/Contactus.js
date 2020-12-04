@@ -18,14 +18,20 @@ function Contactus() {
       title="Contact Us"
       description="Hi there!! My name is Kunal Jain, I'm currently a student at IIIT Gwalior. You can reach out to me through the following social media handles."
     >
-      <div className="text-center">
-        <img
-          src={me}
-          style={{ width: "500px", height: "500px", paddingTop: "0px" }}
-          alt="ME"
-        />
+      <div className="justify-content-center text-center">
+        <div
+          style={{ height: "300px", width: "250px" }}
+          className="mx-auto rounded"
+        >
+          <img
+            src={me}
+            alt="Product"
+            style={{ maxHeight: "100%", maxWidth: "100%" }}
+            className="border border-dark rounded"
+          />
+        </div>
         <br />
-        <div className="p-3">
+        <div className="">
           <a href={gitlink} target="_blank" rel="noopener noreferrer">
             <img
               src={git}

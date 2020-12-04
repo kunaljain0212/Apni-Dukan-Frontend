@@ -1,21 +1,50 @@
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { isAuthenticated } from "../auth/helper";
 import Base from "../core/Base";
-import { getCategories } from "./helper/adminapicall";
+import {
+  deleteCategory,
+  getCategories,
+  getProducts,
+} from "./helper/adminapicall";
 
 const ManageCategories = () => {
   const [categories, setCategories] = useState([]);
 
+  const [products, setProducts] = useState([]);
+
+  const { _id, token } = isAuthenticated();
+
   const preload = () => {
     getCategories().then((data) => {
-      console.log(data);
+      // console.log(data);
       if (data.error) {
         console.log(data.error);
       } else {
         setCategories(data);
+      }
+    });
+    getProducts().then((data) => {
+      //   console.log(data);
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        setProducts(data);
+      }
+    });
+  };
+  
+// console.log(products)
+
+  const deleteaCategory = (categoryId) => {
+    deleteCategory(categoryId, _id, token).then((data) => {
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        preload();
       }
     });
   };
@@ -27,37 +56,35 @@ const ManageCategories = () => {
   return (
     <Base title="Manage all your categories here!" description="">
       <div className="container bg-info rounded p-2">
-        {categories.map((category, index) => (
-          <div className="d-flex p-1 bg-light text-black justify-content-between">
-            <span>
-            <input
-            style={{backgroundColor: "transparent", boxShadow: "none" , border: "none" , borderBottom: "" , borderBottomColor: "#ffc107"}}
-              //   onChange={handleChange("name")}
-              type="text"
-              //   placeholder="For Ex. Gym Tshirt"
-              required
-              value={category.name}
-              className="form-control"
-            />
-            </span>
-            <div>
-              <Link
-              //   to={`/admin/product/update/${product._id}`}
-              >
+        <div className="row">
+          {categories.map((category, index) => (
+            <div key={index} className="col-12 col-sm-6 col-md-4">
+              <Card className="mb-2">
+                <Card.Header className="text-dark">{category.name}</Card.Header>
                 <Button variant="success" className="p-1 m-1">
                   Update
                 </Button>
-              </Link>
-              <Button
-                // onClick={() => deleteaProduct(product._id)}
-                variant="danger"
-                className="p-1 m-1"
-              >
-                Delete
-              </Button>
+                <Button
+                  onClick={() => deleteaCategory(category._id)}
+                  variant="danger"
+                  className="p-1 m-1"
+                >
+                  Delete
+                </Button>
+              </Card>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+        <div className="m-3">
+          <Button variant="light">
+            <Link
+              style={{ textDecoration: "none", color: "black" }}
+              to="/admin/dashboard"
+            >
+              Go Back
+            </Link>
+          </Button>
+        </div>
       </div>
     </Base>
   );

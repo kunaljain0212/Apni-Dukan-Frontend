@@ -6,5 +6,5 @@
 <br>
 
 <img   src="./Untitled design.png">
-
+<h5> <a href="https://github.com/Jwright707/Apni-Dukan-Frontent/blob/master/contribution.md"> CONTRIBUTION GUIDELINES </a> </h5>
 <h5><a href="https://github.com/kunaljain0212/Apni-Dukan-Frontent/blob/master/LICENSE">LICENSE</a></h5>

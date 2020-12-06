@@ -8,6 +8,8 @@
 <img   src="./Untitled design.png">
 
 <p>
+ ##About Project:
+  It is an e-commerce web app with an utterly responsive UI, proper user authentication using bcrypt, admin and user panel, CRUD operations in backend for managing products, categories, and users, Razorpay payment gateway, and dark mode. It was built using MERN stack and hosted using Heroku for backend, MongoDB Atlas for database, and Netlify for frontend
 <h2>Contribution Guidelines:</h2>
 <ul>
 <li>Fork the repository.</li>

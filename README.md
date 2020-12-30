@@ -8,6 +8,7 @@
 <img   src="./Untitled design.png">
 
 <p>
+
  ##About Project:
   It is an e-commerce web app with an utterly responsive UI, proper user authentication using bcrypt, admin and user panel, CRUD operations in backend for managing products, categories, and users, Razorpay payment gateway, and dark mode. It was built using MERN stack and hosted using Heroku for backend, MongoDB Atlas for database, and Netlify for frontend
 <h2>Contribution Guidelines:</h2>
@@ -27,5 +28,9 @@
 <li>Now make a Pull Request and wait for it to get merged.</li>
 </ul>
 </p>
+
+<h2><a href="https://github.com/kunaljain0212/Apni-Dukan-Frontent/blob/master/CONTRIBUTION.md">Contribution Guidelines</a></h2>
+
+
 
 <h5><a href="https://github.com/kunaljain0212/Apni-Dukan-Frontent/blob/master/LICENSE">LICENSE</a></h5>

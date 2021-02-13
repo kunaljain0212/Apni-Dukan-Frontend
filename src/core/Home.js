@@ -26,7 +26,7 @@ export default function Home() {
 
   // console.log(API);
   return (
-    <Base title="Homepage" description="Welcome to Aapki Dukan">
+    <Base title="Homepage" description="Welcome to Apni Dukan">
       <div className="p-4">
         <div className="container-fluid rounded p-3">
           {error ? (

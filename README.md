@@ -149,3 +149,7 @@ Run `npm start` in the Backend repo first and then in Frontend .
 
 [Read here](https://github.com/kunaljain0212/Apni-Dukan-Frontend/blob/master/LICENSE)
 
+<<<<<<< HEAD
+=======
+<h5><a href="https://github.com/kunaljain0212/Apni-Dukan-Frontent/blob/master/LICENSE">LICENSE</a></h5>
+>>>>>>> 482e153a0922ae1f1f01cd883e83aa0eab244299

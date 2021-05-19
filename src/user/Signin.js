@@ -7,8 +7,8 @@ import "../styles.css"
 
 function Signin() { 
   const [values, setValues] = useState({
-    email: "kunali@gmail.com",
-    password: "kunali",
+    email: "",
+    password: "",
     error: "",
     loading: false,
     didRedirect: false,

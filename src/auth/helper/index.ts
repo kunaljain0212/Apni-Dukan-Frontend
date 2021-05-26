@@ -1,8 +1,7 @@
+import { IsAuthenticated, JWT } from "../../interfaces/userInterfaces";
 const { API } = require("../../backend");
 
 export const signup = (user) => {
-  // console.log("1" + user)
-  // console.log("2" + JSON.stringify(user));
   return fetch(`${API}/signup`, {
     method: "POST",
     headers: {
@@ -57,12 +56,12 @@ export const signout = (next) => {
     .catch((err) => console.log(err));
 };
 
-export const isAuthenticated = () => {
+export const isAuthenticated= (): IsAuthenticated  => {
   if (typeof window == "undefined") {
     return false;
   }
   if (localStorage.getItem("jwt")) {
-    return JSON.parse(localStorage.getItem("jwt"));
+    return JSON.parse(localStorage.getItem("jwt")!) as JWT;
   } else {
     return false;
   }

@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import Base from "../core/Base";
 import { Redirect } from "react-router-dom";
 import { signin, authenticate, isAuthenticated } from "../auth/helper";
-import "../styles.css"
+import { SignInState } from "../interfaces/userInterfaces";
+import "../styles.css";
 
-
-function Signin() { 
-  const [values, setValues] = useState({
+function Signin() {
+  const [values, setValues] = useState<SignInState>({
     email: "",
     password: "",
     error: "",
@@ -14,19 +14,16 @@ function Signin() {
     didRedirect: false,
   });
 
-  // console.log("iske andar aaye")
-
   const { email, password, error, loading, didRedirect } = values;
 
-  const handleChange = (name) => (event) => {
-    setValues({ ...values, error: false, [name]: event.target.value });
-  };
+  const handleChange =
+    (name: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+      setValues({ ...values, error: false, [name]: event.target.value });
+    };
 
-  // let count = 0;
   const user = isAuthenticated();
-  // console.log(count++ +"=" + user)
 
-  const onSubmit = (event) => {
+  const onSubmit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
     setValues({ ...values, error: false, loading: true });
     signin({ email, password })

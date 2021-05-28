@@ -5,6 +5,8 @@ import { Button, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { isAuthenticated } from "../auth/helper";
 import Base from "../core/Base";
+import { Category, Product } from "../interfaces/adminInterfaces";
+import { JWT } from "../interfaces/userInterfaces";
 import {
   deleteCategory,
   getCategories,
@@ -12,15 +14,14 @@ import {
 } from "./helper/adminapicall";
 
 const ManageCategories = () => {
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<Category[]>([]);
 
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<Product[]>([]);
 
-  const { _id, token } = isAuthenticated();
+  const { _id, token } = isAuthenticated() as JWT;
 
   const preload = () => {
     getCategories().then((data) => {
-      // console.log(data);
       if (data.error) {
         console.log(data.error);
       } else {
@@ -36,10 +37,8 @@ const ManageCategories = () => {
       }
     });
   };
-  
-// console.log(products)
 
-  const deleteaCategory = (categoryId) => {
+  const deleteaCategory = (categoryId: string) => {
     deleteCategory(categoryId, _id, token).then((data) => {
       if (data.error) {
         console.log(data.error);
@@ -65,7 +64,7 @@ const ManageCategories = () => {
                   Update
                 </Button>
                 <Button
-                  onClick={() => deleteaCategory(category._id)}
+                  onClick={() => deleteaCategory(category._id!)}
                   variant="danger"
                   className="p-1 m-1"
                 >

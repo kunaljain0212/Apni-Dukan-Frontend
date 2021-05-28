@@ -5,36 +5,35 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { Button } from "react-bootstrap";
 import { createCategory } from "./helper/adminapicall";
+import { JWT } from "../interfaces/userInterfaces";
 
 const AddCategory = () => {
-  const [name, setName] = useState("");
-  const [error, setError] = useState(false);
-  const [success, setSuccess] = useState(false);
+  const [name, setName] = useState<string>("");
+  const [error, setError] = useState<boolean | String>(false);
+  const [success, setSuccess] = useState<boolean>(false);
 
-  const { _id, token } = isAuthenticated();
+  const { _id, token } = isAuthenticated() as JWT;
 
-  const handleChange = (event) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setError("");
     setName(event.target.value);
   };
 
-  const onSubmit = (event) => {
+  const onSubmit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
     setError("");
     setSuccess(false);
-    createCategory(_id, token, { name })
-      .then((data) => {
-        // console.log(data);
-        if (data.error) {
-          setError(data.error);
-          setName("")
-          setSuccess(false)
-        } else {
-          setName("");
-          setError("");
-          setSuccess(true);
-        }
-      })
+    createCategory(_id, token, { name }).then((data) => {
+      if (data.error) {
+        setError(data.error);
+        setName("");
+        setSuccess(false);
+      } else {
+        setName("");
+        setError("");
+        setSuccess(true);
+      }
+    });
   };
 
   const successMessage = () => {
@@ -59,6 +58,19 @@ const AddCategory = () => {
     );
   };
 
+  const goBack = () => {
+    return (
+      <Button variant="light">
+        <Link
+          style={{ textDecoration: "none", color: "black" }}
+          to="/admin/dashboard"
+        >
+          Go Back
+        </Link>
+      </Button>
+    );
+  };
+
   const myCategoryForm = () => {
     return (
       <form>
@@ -80,24 +92,11 @@ const AddCategory = () => {
           </button>
         </div>
         {goBack()}
-        <br/>
-        <br/>
+        <br />
+        <br />
         {successMessage()}
         {errorMessage()}
       </form>
-    );
-  };
-
-  const goBack = () => {
-    return (
-      <Button variant="light">
-        <Link
-          style={{ textDecoration: "none", color: "black" }}
-          to="/admin/dashboard"
-        >
-          Go Back
-        </Link>
-      </Button>
     );
   };
 
@@ -107,7 +106,9 @@ const AddCategory = () => {
       description="Add a new category for products"
     >
       <div className="p-3">
-        <div className="container bg-info shadow rounded p-4">{myCategoryForm()}</div>
+        <div className="container bg-info shadow rounded p-4">
+          {myCategoryForm()}
+        </div>
       </div>
     </Base>
   );

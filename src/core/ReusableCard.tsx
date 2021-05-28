@@ -51,7 +51,7 @@ const ReusableCard = ({
 
   // console.log(count);
 
-  const showAddToCart = (addToCart) => {
+  const showAddToCart = (addToCart: boolean) => {
     return (
       addToCart && (
         <div className="d-flex">
@@ -77,7 +77,7 @@ const ReusableCard = ({
       )
     );
   };
-  const showRemoveFromCart = (removeFromCart) => {
+  const showRemoveFromCart = (removeFromCart: boolean) => {
     return (
       removeFromCart && (
         <div>

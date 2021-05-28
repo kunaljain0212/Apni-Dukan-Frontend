@@ -1,9 +1,11 @@
 const { API } = require("../../backend");
 
 //Create category
-export const createCategory = (userId, token, name) => {
-  // console.log(userId + " " + token + " " + name)
-  // console.log( JSON.stringify(name))
+export const createCategory = (
+  userId: string,
+  token: string,
+  name: { name: string }
+) => {
   return fetch(`${API}/category/create/${userId}`, {
     method: "POST",
     headers: {
@@ -31,7 +33,11 @@ export const getCategories = () => {
 };
 
 //Create Product
-export const createProduct = (userId, token, product) => {
+export const createProduct = (
+  userId: string,
+  token: string,
+  product: FormData
+) => {
   return fetch(`${API}/product/create/${userId}`, {
     method: "POST",
     headers: {
@@ -56,7 +62,7 @@ export const getProducts = () => {
 };
 
 //Get photos of products
-export const getPhotosOfProducts = (productId) => {
+export const getPhotosOfProducts = (productId: string) => {
   return fetch(`${API}/product/photo/${productId}`, {
     method: "GET",
   })
@@ -65,7 +71,7 @@ export const getPhotosOfProducts = (productId) => {
 };
 
 //Get a specific product
-export const getaProduct = (productId) => {
+export const getaProduct = (productId: string) => {
   return fetch(`${API}/product/${productId}`, {
     method: "GET",
   })
@@ -74,7 +80,12 @@ export const getaProduct = (productId) => {
 };
 
 //Update Product
-export const updateProduct = (productId, userId, token, product) => {
+export const updateProduct = (
+  productId: string,
+  userId: string,
+  token: string,
+  product: FormData
+) => {
   return fetch(`${API}/product/${productId}/${userId}`, {
     method: "PUT",
     headers: {
@@ -90,7 +101,11 @@ export const updateProduct = (productId, userId, token, product) => {
 };
 
 //Delete Product
-export const deleteProduct = (productId, userId, token) => {
+export const deleteProduct = (
+  productId: string,
+  userId: string,
+  token: string
+) => {
   return fetch(`${API}/product/${productId}/${userId}`, {
     method: "DELETE",
     headers: {
@@ -105,7 +120,11 @@ export const deleteProduct = (productId, userId, token) => {
 };
 
 //Delete Category
-export const deleteCategory = (categoryId, userId, token) => {
+export const deleteCategory = (
+  categoryId: string,
+  userId: string,
+  token: string
+) => {
   return fetch(`${API}/category/${categoryId}/delete/${userId}`, {
     method: "DELETE",
     headers: {

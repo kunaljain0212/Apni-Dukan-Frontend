@@ -6,9 +6,11 @@ import { useState } from "react";
 import { getCategories, createProduct } from "./helper/adminapicall";
 import { useEffect } from "react";
 import { isAuthenticated } from "../auth/helper";
+import { Product } from "../interfaces/adminInterfaces";
+import { JWT } from "../interfaces/userInterfaces";
 
 const AddProduct = () => {
-  const [values, setValues] = useState({
+  const [values, setValues] = useState<Product>({
     name: "",
     description: "",
     price: "",
@@ -21,7 +23,7 @@ const AddProduct = () => {
     success: "",
     createdProduct: "",
     getaRedirect: false,
-    formData: "",
+    formData: new FormData(),
   });
 
   const {
@@ -30,21 +32,16 @@ const AddProduct = () => {
     price,
     stock,
     categories,
-    // category,
     error,
     success,
-    // loading,
     createdProduct,
-    // getaRedirect,
     formData,
   } = values;
 
-  const { _id, token } = isAuthenticated();
-  // console.log(_id);
+  const { _id, token } = isAuthenticated() as JWT;
 
   const preload = () => {
     getCategories().then((data) => {
-      //   console.log(data);
       if (data.error) {
         setValues({
           ...values,
@@ -60,19 +57,26 @@ const AddProduct = () => {
 
   useEffect(() => {
     preload();
-    // console.log("run"+ categories)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // console.log(values)
+  const handleChange =
+    (name: string) =>
+    (
+      event:
+        | React.ChangeEvent<HTMLInputElement>
+        | React.ChangeEvent<HTMLTextAreaElement>
+        | React.ChangeEvent<HTMLSelectElement>
+    ) => {
+      const value =
+        name === "photo"
+          ? (event as React.ChangeEvent<HTMLInputElement>).target.files![0]
+          : event.target.value;
+      formData.set(name, value);
+      setValues({ ...values, [name]: value });
+    };
 
-  const handleChange = (name) => (event) => {
-    const value = name === "photo" ? event.target.files[0] : event.target.value;
-    // console.log(event.target.files);
-    formData.set(name, value);
-    setValues({ ...values, [name]: value });
-  };
-
-  const onSubmit = (event) => {
+  const onSubmit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
     setValues({ ...values, error: "", loading: true });
     createProduct(_id, token, formData)

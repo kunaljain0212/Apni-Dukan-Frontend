@@ -7,11 +7,13 @@ import { isAuthenticated } from "../auth/helper";
 import { getProducts, deleteProduct } from "./helper/adminapicall";
 import { useEffect } from "react";
 import { API } from "../backend";
+import { JWT } from "../interfaces/userInterfaces";
+import { Product } from "../interfaces/adminInterfaces";
 
 const ManageProducts = () => {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<Product[]>([]);
 
-  const { _id, token } = isAuthenticated();
+  const { _id, token } = isAuthenticated() as JWT;
 
   const preload = () => {
     getProducts().then((data) => {
@@ -28,7 +30,7 @@ const ManageProducts = () => {
     preload();
   }, []);
 
-  const deleteaProduct = (productId) => {
+  const deleteaProduct = (productId: string) => {
     // console.log(productId);
     deleteProduct(productId, _id, token).then((data) => {
       if (data.error) {
@@ -39,7 +41,6 @@ const ManageProducts = () => {
     });
   };
 
-  //   console.log(products)
   const goBack = () => {
     return (
       <Link

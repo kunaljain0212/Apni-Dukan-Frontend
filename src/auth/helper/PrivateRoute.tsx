@@ -2,10 +2,13 @@ import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import { isAuthenticated } from "./index";
 
-function PrivateRoute({ component: Component, ...rest }) {
-  // console.log(Component);
-  // console.log(rest)
-  // console.log(isAuthenticated().role)
+interface IProps {
+  component: React.FC;
+  path: string;
+  exact: boolean;
+}
+
+const PrivateRoute: React.FC<IProps> = ({ component: Component, ...rest }) => {
   return (
     <Route
       {...rest}
@@ -23,6 +26,6 @@ function PrivateRoute({ component: Component, ...rest }) {
       }
     />
   );
-}
+};
 
 export default PrivateRoute;

@@ -7,7 +7,6 @@ interface IProps {
   component: React.FC;
   path: string;
   exact: boolean;
-  rest: Object;
 }
 
 const AdminRoute: React.FC<IProps> = ({ component: Component, ...rest }) => {

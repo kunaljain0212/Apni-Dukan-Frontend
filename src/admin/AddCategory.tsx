@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Button } from "react-bootstrap";
 import { createCategory } from "./helper/adminapicall";
 import { JWT } from "../interfaces/userInterfaces";
+import { CustomError } from "../interfaces/adminInterfaces";
 
 const AddCategory = () => {
   const [name, setName] = useState<string>("");
@@ -24,8 +25,8 @@ const AddCategory = () => {
     setError("");
     setSuccess(false);
     createCategory(_id, token, { name }).then((data) => {
-      if (data.error) {
-        setError(data.error);
+      if ((data as CustomError).error) {
+        setError((data as CustomError).error);
         setName("");
         setSuccess(false);
       } else {

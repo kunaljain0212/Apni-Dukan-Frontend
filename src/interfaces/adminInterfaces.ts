@@ -6,12 +6,16 @@ export interface Category {
   _id?: string;
 }
 
-export interface Product {
+export interface CustomError {
+  error: string;
+}
+
+export interface AddProductState {
   name: string;
   description: string;
   price: string;
   stock: string;
-  photo: string;
+  photo?: string;
   categories: Category[];
   category: string;
   loading: boolean;
@@ -22,6 +26,15 @@ export interface Product {
   formData: FormData;
 }
 
-export interface CustomError {
-  error: string;
+export interface Product {
+  _id: string;
+  name: string;
+  description: string;
+  price: string;
+  stock: string;
+  photo?: Object;
+  createdAt?: string;
+  updatedAt?: string;
+  category: Category;
+  _v?: number;
 }

@@ -6,11 +6,11 @@ import { useState } from "react";
 import { getCategories, createProduct } from "./helper/adminapicall";
 import { useEffect } from "react";
 import { isAuthenticated } from "../auth/helper";
-import { Product } from "../interfaces/adminInterfaces";
+import { AddProductState } from "../interfaces/adminInterfaces";
 import { JWT } from "../interfaces/userInterfaces";
 
 const AddProduct = () => {
-  const [values, setValues] = useState<Product>({
+  const [values, setValues] = useState<AddProductState>({
     name: "",
     description: "",
     price: "",

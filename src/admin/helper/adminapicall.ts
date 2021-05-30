@@ -1,12 +1,14 @@
+import { Category, CustomError } from "../../interfaces/adminInterfaces";
+
 const { API } = require("../../backend");
 
 //Create category
-export const createCategory = (
+export const createCategory = async (
   userId: string,
   token: string,
   name: { name: string }
-) => {
-  return fetch(`${API}/category/create/${userId}`, {
+): Promise<Category | CustomError> => {
+  const response = await fetch(`${API}/category/create/${userId}`, {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -14,11 +16,8 @@ export const createCategory = (
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(name),
-  })
-    .then((res) => {
-      return res.json();
-    })
-    .catch((err) => console.log(err));
+  });
+  return response.json();
 };
 
 //Get all Categories

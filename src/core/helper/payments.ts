@@ -1,6 +1,10 @@
 import { API } from "../../backend";
 
-export const processPayment = (userId, token, paymentInfo) => {
+export const processPayment = (
+  userId: string,
+  token: string,
+  paymentInfo: any
+) => {
   fetch(`${API}/payments/order/${userId}`, {
     method: "POST",
     headers: {
@@ -11,8 +15,8 @@ export const processPayment = (userId, token, paymentInfo) => {
     body: JSON.stringify(paymentInfo),
   })
     .then((res) => {
-        // console.log(res.json())
-        return res.json()
+      // console.log(res.json())
+      return res.json();
     })
     .catch((error) => console.log(error));
 };

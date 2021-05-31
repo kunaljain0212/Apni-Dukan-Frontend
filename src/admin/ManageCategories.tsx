@@ -5,7 +5,7 @@ import { Button, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { isAuthenticated } from "../auth/helper";
 import Base from "../core/Base";
-import { Category, Product } from "../interfaces/adminInterfaces";
+import { Category, CustomError, Product } from "../interfaces/adminInterfaces";
 import { JWT } from "../interfaces/userInterfaces";
 import {
   deleteCategory,
@@ -16,16 +16,17 @@ import {
 const ManageCategories = () => {
   const [categories, setCategories] = useState<Category[]>([]);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [products, setProducts] = useState<Product[]>([]);
 
   const { _id, token } = isAuthenticated() as JWT;
 
   const preload = () => {
     getCategories().then((data) => {
-      if (data.error) {
-        console.log(data.error);
+      if ((data as CustomError).error) {
+        console.log((data as CustomError).error);
       } else {
-        setCategories(data);
+        setCategories(data as Category[]);
       }
     });
     getProducts().then((data) => {

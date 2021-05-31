@@ -1,7 +1,17 @@
-import { IsAuthenticated, JWT } from "../../interfaces/userInterfaces";
+import { CustomError } from "../../interfaces/adminInterfaces";
+import {
+  IsAuthenticated,
+  JWT,
+  SignUp,
+  SignIn,
+  SignInAPIResponse,
+  SignUpAPIResponse,
+} from "../../interfaces/userInterfaces";
 const { API } = require("../../backend");
 
-export const signup = (user) => {
+export const signup = (
+  user: SignUp
+): Promise<SignUpAPIResponse | CustomError> => {
   return fetch(`${API}/signup`, {
     method: "POST",
     headers: {
@@ -11,14 +21,14 @@ export const signup = (user) => {
     body: JSON.stringify(user),
   })
     .then((response) => {
-      // console.log("3"+response)
-      // console.log("4" + response.json());
       return response.json();
     })
     .catch((err) => console.log(err));
 };
 
-export const signin = (user) => {
+export const signin = (
+  user: SignIn
+): Promise<SignInAPIResponse | CustomError> => {
   return fetch(`${API}/signin`, {
     method: "POST",
     headers: {
@@ -33,14 +43,14 @@ export const signin = (user) => {
     .catch((err) => console.log(err));
 };
 
-export const authenticate = (data, next) => {
+export const authenticate = (data: SignInAPIResponse, next: () => void) => {
   if (typeof window !== "undefined") {
     localStorage.setItem("jwt", JSON.stringify(data));
     next();
   }
 };
 
-export const signout = (next) => {
+export const signout = (next: () => void) => {
   if (typeof window !== "undefined") {
     localStorage.removeItem("jwt");
     localStorage.removeItem("cart");
@@ -56,7 +66,7 @@ export const signout = (next) => {
     .catch((err) => console.log(err));
 };
 
-export const isAuthenticated= (): IsAuthenticated  => {
+export const isAuthenticated = (): IsAuthenticated => {
   if (typeof window == "undefined") {
     return false;
   }

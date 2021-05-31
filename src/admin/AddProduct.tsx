@@ -6,7 +6,7 @@ import { useState } from "react";
 import { getCategories, createProduct } from "./helper/adminapicall";
 import { useEffect } from "react";
 import { isAuthenticated } from "../auth/helper";
-import { AddProductState } from "../interfaces/adminInterfaces";
+import { AddProductState, Category, CustomError } from "../interfaces/adminInterfaces";
 import { JWT } from "../interfaces/userInterfaces";
 
 const AddProduct = () => {
@@ -42,15 +42,19 @@ const AddProduct = () => {
 
   const preload = () => {
     getCategories().then((data) => {
-      if (data.error) {
+      if ((data as CustomError).error) {
         setValues({
           ...values,
-          error: data.error,
+          error: (data as CustomError).error,
           success: false,
           loading: false,
         });
       } else {
-        setValues({ ...values, categories: data, formData: new FormData() });
+        setValues({
+          ...values,
+          categories: data as Category[],
+          formData: new FormData(),
+        });
       }
     });
   };

@@ -4,29 +4,30 @@ import { cartEmpty } from "./helper/cartHelper";
 import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { KEY_ID, API } from "../backend";
-import LOGO from "./LOGO.png";
+import LOGO from "./logos/LOGO.png";
+import { JWT } from "../interfaces/userInterfaces";
+import { LocalStorageCart } from "../interfaces/coreInterfaces";
 
-const RazorpayCheckout = ({
+interface IProps {
+  products: LocalStorageCart;
+  setReload: React.Dispatch<React.SetStateAction<boolean>>;
+  reload: boolean;
+}
+
+const RazorpayCheckout: React.FC<IProps> = ({
   products,
   setReload = (f) => f,
-  reload = undefined,
+  reload = false,
 }) => {
-  // const [data, setData] = useState({
-  //   loading: false,
-  //   success: false,
-  //   error: "",
-  //   address: "",
-  // });
-
-  const token = isAuthenticated() && isAuthenticated().token;
-  const userId = isAuthenticated() && isAuthenticated()._id;
-  const email = isAuthenticated() && isAuthenticated().email;
-  const name = isAuthenticated() && isAuthenticated().name;
+  const token = isAuthenticated() && (isAuthenticated() as JWT).token;
+  const userId = isAuthenticated() && (isAuthenticated() as JWT)._id;
+  const email = isAuthenticated() && (isAuthenticated() as JWT).email;
+  const name = isAuthenticated() && (isAuthenticated() as JWT).name;
 
   const totalAmount = () => {
     let amount = 0;
     products.forEach((p) => {
-      amount += p.count * p.item.price;
+      amount += p.count * parseFloat(p.item.price);
     });
     return amount;
   };
@@ -69,8 +70,7 @@ const RazorpayCheckout = ({
       description: "Cart payment",
       image: LOGO,
       order_id: data.id,
-      handler: function (response) {
-        // console.log(response);
+      handler: function (_: any) {
         cartEmpty();
         setReload(!reload);
       },
@@ -79,11 +79,11 @@ const RazorpayCheckout = ({
         email: email,
       },
     };
-    const paymentObject = new window.Razorpay(options);
+    const paymentObject = new (window as any).Razorpay(options);
     paymentObject.open();
   };
 
-  const loadRazorpay = (src) => {
+  const loadRazorpay = (src: any) => {
     return new Promise((resolve) => {
       const script = document.createElement("script");
       script.src = src;

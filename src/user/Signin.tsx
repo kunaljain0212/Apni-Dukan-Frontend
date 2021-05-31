@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import Base from "../core/Base";
 import { Redirect } from "react-router-dom";
 import { signin, authenticate, isAuthenticated } from "../auth/helper";
-import { SignInState } from "../interfaces/userInterfaces";
+import { JWT, SignInAPIResponse, SignInState } from "../interfaces/userInterfaces";
 import "../styles.css";
+import { CustomError } from "../interfaces/adminInterfaces";
 
 function Signin() {
   const [values, setValues] = useState<SignInState>({
@@ -29,10 +30,14 @@ function Signin() {
     signin({ email, password })
       .then((data) => {
         // console.log(data);
-        if (data.error) {
-          setValues({ ...values, error: data.error, loading: false });
+        if ((data as CustomError).error) {
+          setValues({
+            ...values,
+            error: (data as CustomError).error,
+            loading: false,
+          });
         } else {
-          authenticate(data, () => {
+          authenticate(data as SignInAPIResponse, () => {
             setValues({
               ...values,
               email: "",
@@ -49,7 +54,7 @@ function Signin() {
 
   const performRedirect = () => {
     if (didRedirect) {
-      if (user && user.role === 1) {
+      if (user && (user as JWT).role === 1) {
         return <Redirect to="/admin/dashboard" />;
       } else {
         return <Redirect to="/" />;

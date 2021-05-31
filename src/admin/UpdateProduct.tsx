@@ -10,11 +10,13 @@ import {
 } from "./helper/adminapicall";
 import { useEffect } from "react";
 import { isAuthenticated } from "../auth/helper";
+import { JWT } from "../interfaces/userInterfaces";
+import { Category, CustomError, UpdateProductState } from "../interfaces/adminInterfaces";
 
 const UpdateProduct = () => {
-  let { productId } = useParams();
+  let { productId } = useParams<{ productId: string }>();
   // console.log(productId)
-  const [values, setValues] = useState({
+  const [values, setValues] = useState<UpdateProductState>({
     name: "",
     description: "",
     price: "",
@@ -28,7 +30,7 @@ const UpdateProduct = () => {
     success: "",
     createdProduct: "",
     getaRedirect: false,
-    formData: "",
+    formData: new FormData(),
   });
 
   const {
@@ -47,9 +49,9 @@ const UpdateProduct = () => {
     formData,
   } = values;
 
-  const { _id, token } = isAuthenticated();
+  const { _id, token } = isAuthenticated() as JWT;
 
-  const preload = (productId) => {
+  const preload = (productId: string) => {
     getaProduct(productId).then((data) => {
       // console.log(data);
       if (data?.error) {
@@ -77,31 +79,41 @@ const UpdateProduct = () => {
   const preloadCategories = () => {
     getCategories().then((data) => {
       //   console.log(data);
-      if (data.error) {
+      if ((data as CustomError).error) {
         setValues({
           ...values,
-          error: data.error,
+          error: (data as CustomError).error,
           success: false,
           loading: false,
         });
       } else {
-        setValues({ categories: data, formData: new FormData() });
+        setValues({ categories: data as Category[], formData: new FormData() });
       }
     });
   };
 
   useEffect(() => {
     preload(productId);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleChange = (name) => (event) => {
-    const value = name === "photo" ? event.target.files[0] : event.target.value;
-    formData.set(name, value);
-    setValues({ ...values, [name]: value });
-  };
+  const handleChange =
+    (name: string) =>
+    (
+      event:
+        | React.ChangeEvent<HTMLInputElement>
+        | React.ChangeEvent<HTMLTextAreaElement>
+        | React.ChangeEvent<HTMLSelectElement>
+    ) => {
+      const value =
+        name === "photo"
+          ? (event as React.ChangeEvent<HTMLInputElement>).target.files![0]
+          : event.target.value;
+      formData.set(name, value);
+      setValues({ ...values, [name]: value });
+    };
 
-  const onSubmit = (event) => {
+  const onSubmit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
     setValues({ ...values, error: "", loading: true });
     updateProduct(productId, _id, token, formData)

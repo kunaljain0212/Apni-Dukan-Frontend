@@ -3,6 +3,7 @@ import Base from "../core/Base";
 import { Link } from "react-router-dom";
 import { signup } from "../auth/helper";
 import { SignUpState } from "../interfaces/userInterfaces";
+import { CustomError } from "../interfaces/adminInterfaces";
 
 function Signup() {
   const [values, setValues] = useState<SignUpState>({
@@ -26,10 +27,12 @@ function Signup() {
     setValues({ ...values, error: false });
     signup({ name, lastname, email, password })
       .then((data) => {
-        console.log(data);
-        if (data.error) {
-          setValues({ ...values, error: data.error, success: false });
-          // console.log("databse se error while saving" + data.error)
+        if ((data as CustomError).error) {
+          setValues({
+            ...values,
+            error: (data as CustomError).error,
+            success: false,
+          });
         } else {
           setValues({
             ...values,

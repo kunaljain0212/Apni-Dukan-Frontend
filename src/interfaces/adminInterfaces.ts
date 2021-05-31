@@ -26,6 +26,23 @@ export interface AddProductState {
   formData: FormData;
 }
 
+export interface UpdateProductState {
+  name?: string;
+  description?: string;
+  price?: string;
+  stock?: string;
+  photo?: string;
+  categories?: Category[];
+  category?: string;
+  oldCate?: string;
+  loading?: boolean;
+  error?: string | boolean;
+  success?: string | boolean;
+  createdProduct?: string;
+  getaRedirect?: boolean;
+  formData: FormData;
+}
+
 export interface Product {
   _id: string;
   name: string;

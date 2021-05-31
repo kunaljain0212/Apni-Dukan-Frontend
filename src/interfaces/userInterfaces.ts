@@ -6,6 +6,31 @@ export interface SignInState {
   didRedirect: boolean;
 }
 
+export interface SignUp {
+  name: string;
+  lastname: string;
+  email: string;
+  password: string;
+}
+export interface SignIn {
+  email: string;
+  password: string;
+}
+
+export interface SignInAPIResponse {
+  token: string;
+  _id: string;
+  name: string;
+  email: string;
+  role: number;
+}
+
+export interface SignUpAPIResponse {
+  name: string;
+  email: string;
+  id: string;
+}
+
 export interface SignUpState {
   name: string;
   lastname: string;

@@ -4,18 +4,18 @@ import Base from "./Base";
 import ReusableCard from "./ReusableCard";
 import { useState } from "react";
 import { getProducts } from "./helper/coreapicalls";
+import { CustomError, Product } from "../interfaces/adminInterfaces";
 
 export default function Home() {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [error, setError] = useState("");
 
   const preload = () => {
     getProducts().then((data) => {
-        // console.log(data);
-      if (data.error) {
-        setError(data.error);
+      if ((data as CustomError).error) {
+        setError((data as CustomError).error);
       } else {
-        setProducts(data);
+        setProducts(data as Product[]);
       }
     });
   };

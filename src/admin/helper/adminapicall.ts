@@ -21,7 +21,7 @@ export const createCategory = async (
 };
 
 //Get all Categories
-export const getCategories = () => {
+export const getCategories = (): Promise<Category[] | CustomError> => {
   return fetch(`${API}/categories/all`, {
     method: "GET",
   })

@@ -1,14 +1,22 @@
 import React from "react";
 import Base from "../core/Base";
 import { Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useState } from "react";
-import { getCategories, createProduct } from "./helper/adminapicall";
+import {
+  getCategories,
+  getaProduct,
+  updateProduct,
+} from "./helper/adminapicall";
 import { useEffect } from "react";
 import { isAuthenticated } from "../auth/helper";
+import { JWT } from "../interfaces/userInterfaces";
+import { Category, CustomError, UpdateProductState } from "../interfaces/adminInterfaces";
 
-const AddProduct = () => {
-  const [values, setValues] = useState({
+const UpdateProduct = () => {
+  let { productId } = useParams<{ productId: string }>();
+  // console.log(productId)
+  const [values, setValues] = useState<UpdateProductState>({
     name: "",
     description: "",
     price: "",
@@ -16,12 +24,13 @@ const AddProduct = () => {
     photo: "",
     categories: [],
     category: "",
+    oldCate: "",
     loading: false,
     error: "",
     success: "",
     createdProduct: "",
     getaRedirect: false,
-    formData: "",
+    formData: new FormData(),
   });
 
   const {
@@ -30,6 +39,7 @@ const AddProduct = () => {
     price,
     stock,
     categories,
+    oldCate,
     // category,
     error,
     success,
@@ -39,13 +49,12 @@ const AddProduct = () => {
     formData,
   } = values;
 
-  const { _id, token } = isAuthenticated();
-  // console.log(_id);
+  const { _id, token } = isAuthenticated() as JWT;
 
-  const preload = () => {
-    getCategories().then((data) => {
-      //   console.log(data);
-      if (data.error) {
+  const preload = (productId: string) => {
+    getaProduct(productId).then((data) => {
+      // console.log(data);
+      if (data?.error) {
         setValues({
           ...values,
           error: data.error,
@@ -53,29 +62,61 @@ const AddProduct = () => {
           loading: false,
         });
       } else {
-        setValues({ ...values, categories: data, formData: new FormData() });
+        setValues({
+          ...values,
+          name: data.name,
+          description: data.description,
+          price: data.price,
+          stock: data.stock,
+          oldCate: data.category.name,
+          formData: new FormData(),
+        });
+        preloadCategories();
+      }
+    });
+  };
+
+  const preloadCategories = () => {
+    getCategories().then((data) => {
+      //   console.log(data);
+      if ((data as CustomError).error) {
+        setValues({
+          ...values,
+          error: (data as CustomError).error,
+          success: false,
+          loading: false,
+        });
+      } else {
+        setValues({ categories: data as Category[], formData: new FormData() });
       }
     });
   };
 
   useEffect(() => {
-    preload();
-    // console.log("run"+ categories)
+    preload(productId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // console.log(values)
+  const handleChange =
+    (name: string) =>
+    (
+      event:
+        | React.ChangeEvent<HTMLInputElement>
+        | React.ChangeEvent<HTMLTextAreaElement>
+        | React.ChangeEvent<HTMLSelectElement>
+    ) => {
+      const value =
+        name === "photo"
+          ? (event as React.ChangeEvent<HTMLInputElement>).target.files![0]
+          : event.target.value;
+      formData.set(name, value);
+      setValues({ ...values, [name]: value });
+    };
 
-  const handleChange = (name) => (event) => {
-    const value = name === "photo" ? event.target.files[0] : event.target.value;
-    // console.log(event.target.files);
-    formData.set(name, value);
-    setValues({ ...values, [name]: value });
-  };
-
-  const onSubmit = (event) => {
+  const onSubmit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
     setValues({ ...values, error: "", loading: true });
-    createProduct(_id, token, formData)
+    updateProduct(productId, _id, token, formData)
       .then((data) => {
         // console.log(data);
         if (data.error) {
@@ -99,7 +140,7 @@ const AddProduct = () => {
           });
         }
       })
-      .catch();
+      .catch((err) => console.log(err));
   };
 
   const successMessage = () => {
@@ -108,7 +149,7 @@ const AddProduct = () => {
         className="text-success bg-white text-center"
         style={{ display: success ? "" : "none" }}
       >
-        Product: {createdProduct} created successfully.
+        Product: {createdProduct} Updated successfully.
       </span>
     );
   };
@@ -129,7 +170,7 @@ const AddProduct = () => {
       <Button variant="light">
         <Link
           style={{ textDecoration: "none", color: "black" }}
-          to="/admin/dashboard"
+          to="/admin/products"
         >
           Go Back
         </Link>
@@ -142,7 +183,7 @@ const AddProduct = () => {
       <form>
         <div className="form-group">
           <div className="lead text-dark bg-warning p-2">
-            Add details of the Product here
+            Update old details
           </div>
           <div className="p-2">
             <label>Product Name</label>
@@ -178,7 +219,7 @@ const AddProduct = () => {
               className="form-control"
               placeholder="Category"
             >
-              <option>Available categories</option>
+              <option>{oldCate}</option>
               {categories &&
                 categories.map((cate, index) => (
                   <option key={index} value={cate._id}>
@@ -211,7 +252,7 @@ const AddProduct = () => {
             <br />
             <br />
             <button onClick={onSubmit} className="btn btn-light">
-              Create Product
+              Update Product
             </button>
           </div>
         </div>
@@ -225,10 +266,7 @@ const AddProduct = () => {
   };
 
   return (
-    <Base
-      title="Create a product here!"
-      description="Add new products to your categories"
-    >
+    <Base title="Update your product here!" description="Change is necessary">
       <div className="p-3">
         <div className="container bg-info rounded p-4">{myProductForm()}</div>
       </div>
@@ -236,4 +274,4 @@ const AddProduct = () => {
   );
 };
 
-export default AddProduct;
+export default UpdateProduct;

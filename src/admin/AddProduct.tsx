@@ -1,20 +1,16 @@
 import React from "react";
 import Base from "../core/Base";
 import { Button } from "react-bootstrap";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState } from "react";
-import {
-  getCategories,
-  getaProduct,
-  updateProduct,
-} from "./helper/adminapicall";
+import { getCategories, createProduct } from "./helper/adminapicall";
 import { useEffect } from "react";
 import { isAuthenticated } from "../auth/helper";
+import { AddProductState, Category, CustomError } from "../interfaces/adminInterfaces";
+import { JWT } from "../interfaces/userInterfaces";
 
-const UpdateProduct = () => {
-  let { productId } = useParams();
-  // console.log(productId)
-  const [values, setValues] = useState({
+const AddProduct = () => {
+  const [values, setValues] = useState<AddProductState>({
     name: "",
     description: "",
     price: "",
@@ -22,13 +18,12 @@ const UpdateProduct = () => {
     photo: "",
     categories: [],
     category: "",
-    oldCate: "",
     loading: false,
     error: "",
     success: "",
     createdProduct: "",
     getaRedirect: false,
-    formData: "",
+    formData: new FormData(),
   });
 
   const {
@@ -37,73 +32,58 @@ const UpdateProduct = () => {
     price,
     stock,
     categories,
-    oldCate,
-    // category,
     error,
     success,
-    // loading,
     createdProduct,
-    // getaRedirect,
     formData,
   } = values;
 
-  const { _id, token } = isAuthenticated();
+  const { _id, token } = isAuthenticated() as JWT;
 
-  const preload = (productId) => {
-    getaProduct(productId).then((data) => {
-      // console.log(data);
-      if (data?.error) {
+  const preload = () => {
+    getCategories().then((data) => {
+      if ((data as CustomError).error) {
         setValues({
           ...values,
-          error: data.error,
+          error: (data as CustomError).error,
           success: false,
           loading: false,
         });
       } else {
         setValues({
           ...values,
-          name: data.name,
-          description: data.description,
-          price: data.price,
-          stock: data.stock,
-          oldCate: data.category.name,
+          categories: data as Category[],
           formData: new FormData(),
         });
-        preloadCategories();
-      }
-    });
-  };
-
-  const preloadCategories = () => {
-    getCategories().then((data) => {
-      //   console.log(data);
-      if (data.error) {
-        setValues({
-          ...values,
-          error: data.error,
-          success: false,
-          loading: false,
-        });
-      } else {
-        setValues({ categories: data, formData: new FormData() });
       }
     });
   };
 
   useEffect(() => {
-    preload(productId);
+    preload();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleChange = (name) => (event) => {
-    const value = name === "photo" ? event.target.files[0] : event.target.value;
-    formData.set(name, value);
-    setValues({ ...values, [name]: value });
-  };
+  const handleChange =
+    (name: string) =>
+    (
+      event:
+        | React.ChangeEvent<HTMLInputElement>
+        | React.ChangeEvent<HTMLTextAreaElement>
+        | React.ChangeEvent<HTMLSelectElement>
+    ) => {
+      const value =
+        name === "photo"
+          ? (event as React.ChangeEvent<HTMLInputElement>).target.files![0]
+          : event.target.value;
+      formData.set(name, value);
+      setValues({ ...values, [name]: value });
+    };
 
-  const onSubmit = (event) => {
+  const onSubmit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
     setValues({ ...values, error: "", loading: true });
-    updateProduct(productId, _id, token, formData)
+    createProduct(_id, token, formData)
       .then((data) => {
         // console.log(data);
         if (data.error) {
@@ -127,7 +107,7 @@ const UpdateProduct = () => {
           });
         }
       })
-      .catch((err) => console.log(err));
+      .catch();
   };
 
   const successMessage = () => {
@@ -136,7 +116,7 @@ const UpdateProduct = () => {
         className="text-success bg-white text-center"
         style={{ display: success ? "" : "none" }}
       >
-        Product: {createdProduct} Updated successfully.
+        Product: {createdProduct} created successfully.
       </span>
     );
   };
@@ -157,7 +137,7 @@ const UpdateProduct = () => {
       <Button variant="light">
         <Link
           style={{ textDecoration: "none", color: "black" }}
-          to="/admin/products"
+          to="/admin/dashboard"
         >
           Go Back
         </Link>
@@ -170,7 +150,7 @@ const UpdateProduct = () => {
       <form>
         <div className="form-group">
           <div className="lead text-dark bg-warning p-2">
-            Update old details
+            Add details of the Product here
           </div>
           <div className="p-2">
             <label>Product Name</label>
@@ -206,7 +186,7 @@ const UpdateProduct = () => {
               className="form-control"
               placeholder="Category"
             >
-              <option>{oldCate}</option>
+              <option>Available categories</option>
               {categories &&
                 categories.map((cate, index) => (
                   <option key={index} value={cate._id}>
@@ -239,7 +219,7 @@ const UpdateProduct = () => {
             <br />
             <br />
             <button onClick={onSubmit} className="btn btn-light">
-              Update Product
+              Create Product
             </button>
           </div>
         </div>
@@ -253,7 +233,10 @@ const UpdateProduct = () => {
   };
 
   return (
-    <Base title="Update your product here!" description="Change is necessary">
+    <Base
+      title="Create a product here!"
+      description="Add new products to your categories"
+    >
       <div className="p-3">
         <div className="container bg-info rounded p-4">{myProductForm()}</div>
       </div>
@@ -261,4 +244,4 @@ const UpdateProduct = () => {
   );
 };
 
-export default UpdateProduct;
+export default AddProduct;

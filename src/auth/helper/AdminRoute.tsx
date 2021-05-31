@@ -1,16 +1,20 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
+import { JWT } from "../../interfaces/userInterfaces";
 import { isAuthenticated } from "./index";
 
-function PrivateRoute({ component: Component, ...rest }) {
-  // console.log(Component);
-  // console.log(rest)
-  // console.log(isAuthenticated().role)
+interface IProps {
+  component: React.FC;
+  path: string;
+  exact: boolean;
+}
+
+const AdminRoute: React.FC<IProps> = ({ component: Component, ...rest }) => {
   return (
     <Route
       {...rest}
       render={(props) =>
-        isAuthenticated() ? (
+        isAuthenticated() && (isAuthenticated() as JWT).role === 1 ? (
           <Component />
         ) : (
           <Redirect
@@ -23,6 +27,6 @@ function PrivateRoute({ component: Component, ...rest }) {
       }
     />
   );
-}
+};
 
-export default PrivateRoute;
+export default AdminRoute;

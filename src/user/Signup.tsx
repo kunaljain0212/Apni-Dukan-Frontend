@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import Base from "../core/Base";
 import { Link } from "react-router-dom";
 import { signup } from "../auth/helper";
+import { SignUpState } from "../interfaces/userInterfaces";
+import { CustomError } from "../interfaces/adminInterfaces";
 
 function Signup() {
-  const [values, setValues] = useState({
+  const [values, setValues] = useState<SignUpState>({
     name: "",
     lastname: "",
     email: "",
@@ -15,19 +17,22 @@ function Signup() {
 
   const { name, lastname, email, password, error, success } = values;
 
-  const handleChange = (name) => (event) => {
-    setValues({ ...values, error: false, [name]: event.target.value });
-  };
+  const handleChange =
+    (name: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+      setValues({ ...values, error: false, [name]: event.target.value });
+    };
 
-  const onsubmit = (event) => {
+  const onsubmit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
     setValues({ ...values, error: false });
     signup({ name, lastname, email, password })
       .then((data) => {
-        console.log(data);
-        if (data.error) {
-          setValues({ ...values, error: data.error, success: false });
-          // console.log("databse se error while saving" + data.error)
+        if ((data as CustomError).error) {
+          setValues({
+            ...values,
+            error: (data as CustomError).error,
+            success: false,
+          });
         } else {
           setValues({
             ...values,

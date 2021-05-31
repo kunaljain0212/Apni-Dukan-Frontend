@@ -1,11 +1,16 @@
 import React, { Fragment } from "react";
-import { Link, withRouter } from "react-router-dom";
-import LOGO from "./LOGO.png";
+import { Link, withRouter, RouteComponentProps } from "react-router-dom";
+import LOGO from "./logos/LOGO.png";
 import { Nav, Navbar } from "react-bootstrap";
 import { isAuthenticated, signout } from "../auth/helper";
 import "../styles.css";
+import { JWT } from "../interfaces/userInterfaces";
 
-const currentTab = (history, path) => {
+interface IProps extends RouteComponentProps {
+  initialMode: boolean;
+  changeMode: () => void;
+}
+const currentTab = (history: RouteComponentProps["history"], path: string) => {
   if (history.location.pathname === path) {
     return {
       color: "#ffc107",
@@ -17,10 +22,10 @@ const currentTab = (history, path) => {
   }
 };
 
-function Navigation({ history, changeMode, initialMode }) {
+const Navigation: React.FC<IProps> = ({ history, changeMode, initialMode }) => {
   return (
     <div className="shadow-lg sticky-top navBar">
-      <Navbar 
+      <Navbar
         collapseOnSelect
         expand="lg"
         bg="info"
@@ -56,8 +61,7 @@ function Navigation({ history, changeMode, initialMode }) {
             >
               Cart
             </Link>
-            {
-              isAuthenticated() && isAuthenticated().role === 0 && (
+            {isAuthenticated() && (isAuthenticated() as JWT).role === 0 && (
               <Link
                 style={currentTab(history, "/user/dashboard")}
                 className="nav-link"
@@ -66,7 +70,7 @@ function Navigation({ history, changeMode, initialMode }) {
                 U. Dashboard
               </Link>
             )}
-            {isAuthenticated() && isAuthenticated().role === 1 && (
+            {isAuthenticated() && (isAuthenticated() as JWT).role === 1 && (
               <Link
                 style={currentTab(history, "/admin/dashboard")}
                 className="nav-link"
@@ -120,6 +124,6 @@ function Navigation({ history, changeMode, initialMode }) {
       </Navbar>
     </div>
   );
-}
+};
 
 export default withRouter(Navigation);

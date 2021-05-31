@@ -1,9 +1,10 @@
 import React from "react";
 import Base from "../core/Base";
-import { signin, isAuthenticated} from "../auth/helper";
+import { isAuthenticated} from "../auth/helper";
+import { JWT } from "../interfaces/userInterfaces";
 
 function UserDashBoard() {
-  const user = isAuthenticated();
+  const user = isAuthenticated() as JWT;
   return (
     <Base title="UserDashBoard">
       <h1>This is UserDashBoard</h1>

@@ -2,13 +2,18 @@ import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import { isAuthenticated } from "./index";
 
-function AdminRoute({ component: Component, ...rest }) {
-  // console.log(Component);
+interface IProps {
+  component: React.FC;
+  path: string;
+  exact: boolean;
+}
+
+const PrivateRoute: React.FC<IProps> = ({ component: Component, ...rest }) => {
   return (
     <Route
       {...rest}
       render={(props) =>
-        isAuthenticated() && isAuthenticated().role === 1 ? (
+        isAuthenticated() ? (
           <Component />
         ) : (
           <Redirect
@@ -21,6 +26,6 @@ function AdminRoute({ component: Component, ...rest }) {
       }
     />
   );
-}
+};
 
-export default AdminRoute;
+export default PrivateRoute;

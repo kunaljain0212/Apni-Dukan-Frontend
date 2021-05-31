@@ -1,11 +1,21 @@
 import React from "react";
 import { Card, Button } from "react-bootstrap";
-import ImageApiCall from "./helper/ImageApiCall";
+import ImageApiCall from "./ImageApiCall";
 import { addItemToCart, removeItemFromCart } from "./helper/cartHelper";
 import { useState } from "react";
 import { useEffect } from "react";
+import { Product } from "../interfaces/adminInterfaces";
+import { LocalStorageCart, StorageCartItem } from "../interfaces/coreInterfaces";
 
-const ReusableCard = ({
+interface IProps {
+  setReload?: React.Dispatch<React.SetStateAction<boolean>>;
+  reload?: boolean;
+  product: Product;
+  addToCart?: boolean;
+  removeFromCart?: boolean;
+}
+
+const ReusableCard: React.FC<IProps> = ({
   product,
   addToCart = true,
   removeFromCart = false,
@@ -17,11 +27,11 @@ const ReusableCard = ({
   // const [incart, setIncart ] = useState(false)
 
   const getCount = () => {
-    let cart = [];
+    let cart: LocalStorageCart = [];
     if (typeof window !== undefined) {
       if (localStorage.getItem("cart")) {
-        cart = JSON.parse(localStorage.getItem("cart"));
-        const index = cart.findIndex((value) => value.item._id === product._id);
+        cart = JSON.parse(localStorage.getItem("cart")!);
+        const index = cart.findIndex((value: StorageCartItem) => value.item._id === product._id);
         // console.log("index = " + index);
         if (index !== -1) {
           setCount((prev) => (prev = cart[index].count));
@@ -30,11 +40,12 @@ const ReusableCard = ({
       }
     }
   };
-//  console.log(product)
+  //  console.log(product)
   useEffect(() => {
     // console.log("I ran CARD");
     getCount();
     showDescription();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // console.log(count);
@@ -51,7 +62,7 @@ const ReusableCard = ({
 
   // console.log(count);
 
-  const showAddToCart = (addToCart) => {
+  const showAddToCart = (addToCart: boolean) => {
     return (
       addToCart && (
         <div className="d-flex">
@@ -77,7 +88,7 @@ const ReusableCard = ({
       )
     );
   };
-  const showRemoveFromCart = (removeFromCart) => {
+  const showRemoveFromCart = (removeFromCart: boolean) => {
     return (
       removeFromCart && (
         <div>

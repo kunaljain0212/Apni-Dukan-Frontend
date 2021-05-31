@@ -3,10 +3,10 @@ import Base from "../core/Base";
 import { isAuthenticated } from "../auth/helper";
 import { Link } from "react-router-dom";
 import { Button, Badge } from "react-bootstrap";
+import { JWT } from "../interfaces/userInterfaces";
 
 function AdminDashBoard() {
-  const { name, email } = isAuthenticated();
-  // console.log(isAuthenticated())
+  const { name, email } = isAuthenticated() as JWT;
 
   const adminLeftSide = () => {
     return (

@@ -5,17 +5,15 @@ import ReusableCard from "./ReusableCard";
 import { useState } from "react";
 import { loadCart } from "./helper/cartHelper";
 import RazorpayCheckout from "./RazorpayCheckout";
+import { LocalStorageCart } from "../interfaces/coreInterfaces";
 
 export default function Home() {
-  const [products, setProducts] = useState([]);
-  const [reload, setReload] = useState(false);
+  const [products, setProducts] = useState<LocalStorageCart | undefined>([]);
+  const [reload, setReload] = useState<boolean>(false);
 
   useEffect(() => {
     setProducts(loadCart());
   }, [reload]);
-
-  // console.log(products);
-  // console.log(products.length)
 
   return (
     <Base title="Your Cart" description="Ready for checkout!">
@@ -40,7 +38,11 @@ export default function Home() {
               </div>
             </div>
             <div className="col-lg-4 ">
-              <RazorpayCheckout products={products} setReload={setReload} reload={reload} />
+              <RazorpayCheckout
+                products={products}
+                setReload={setReload}
+                reload={reload}
+              />
             </div>
           </div>
         ) : (

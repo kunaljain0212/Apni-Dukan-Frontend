@@ -1,9 +1,11 @@
-export const addItemToCart = (item) => {
-  // console.log(item);
-  let cart = [];
+import { Product } from "../../interfaces/adminInterfaces";
+import { LocalStorageCart } from "../../interfaces/coreInterfaces";
+
+export const addItemToCart = (item: Product) => {
+  let cart: LocalStorageCart = [];
   if (typeof window !== undefined) {
     if (localStorage.getItem("cart")) {
-      cart = JSON.parse(localStorage.getItem("cart"));
+      cart = JSON.parse(localStorage.getItem("cart")!);
       const index = cart.findIndex((value) => value.item._id === item._id);
       // console.log(index);
       if (index !== -1) {
@@ -26,12 +28,12 @@ export const addItemToCart = (item) => {
   }
 };
 
-export const removeItemFromCart = (item) => {
+export const removeItemFromCart = (item: Product) => {
   // console.log(item);
-  let cart = [];
+  let cart: LocalStorageCart = [];
   if (typeof window !== undefined) {
     if (localStorage.getItem("cart")) {
-      cart = JSON.parse(localStorage.getItem("cart"));
+      cart = JSON.parse(localStorage.getItem("cart")!);
       const index = cart.findIndex((value) => value.item._id === item._id);
       if (cart[index].count === 1) {
         cart.splice(index, 1);
@@ -43,10 +45,10 @@ export const removeItemFromCart = (item) => {
   }
 };
 
-export const loadCart = () => {
+export const loadCart = (): LocalStorageCart | undefined => {
   if (typeof window !== undefined) {
     if (localStorage.getItem("cart")) {
-      return JSON.parse(localStorage.getItem("cart"));
+      return JSON.parse(localStorage.getItem("cart")!);
     }
   }
 };

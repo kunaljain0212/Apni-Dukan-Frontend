@@ -8,10 +8,12 @@ import mail from "./logos/mail.png";
 import yt from "./logos/yt.png";
 
 function Contactus() {
-  const gitlink = "https://github.com/kunaljain0212";
-  const linkedinlink = "https://www.linkedin.com/in/kunaljain0212/";
-  const fblink = "https://www.facebook.com/profile.php?id=100011437868777";
-  const ytlink = "https://www.youtube.com/channel/UCi7H3jhe8thIs5XBPrvE0wg";
+  const gitlink: string = "https://github.com/kunaljain0212";
+  const linkedinlink: string = "https://www.linkedin.com/in/kunaljain0212/";
+  const fblink: string =
+    "https://www.facebook.com/profile.php?id=100011437868777";
+  const ytlink: string =
+    "https://www.youtube.com/channel/UCi7H3jhe8thIs5XBPrvE0wg";
 
   return (
     <Base

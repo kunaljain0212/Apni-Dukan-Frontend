@@ -3,12 +3,18 @@ import Navigation from "./Navigation";
 import "../styles.css";
 import { useEffect } from "react";
 
-const Base = ({
+interface IProps {
+  title: string;
+  description?: string;
+  children: React.ReactNode;
+}
+
+const Base: React.FC<IProps> = ({
   title = "My Title",
   description = "My desription",
   children,
 }) => {
-  const [darkmode, setDarkMode] = useState(getInitialMode());
+  const [darkmode, setDarkMode] = useState<boolean>(getInitialMode());
   useEffect(() => {
     localStorage.setItem("dark", JSON.stringify(darkmode));
     document.body.className = darkmode ? "dark-mode" : "light-mode";
@@ -17,7 +23,7 @@ const Base = ({
   function getInitialMode() {
     const isReturningUser = "dark" in localStorage;
     const userPrefMode = getPrefColorMode();
-    const savedMode = JSON.parse(localStorage.getItem("dark"));
+    const savedMode = JSON.parse(localStorage.getItem("dark")!);
     if (isReturningUser) {
       return savedMode;
     } else if (userPrefMode) {

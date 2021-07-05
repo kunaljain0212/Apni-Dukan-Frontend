@@ -30,7 +30,7 @@ export default function Home() {
       <div className="p-4">
         <div className="container-fluid rounded p-3">
           {error ? (
-            <h1>Error loading products!</h1>
+            <h1>{error}</h1>
           ) : (
             <div className="row">
               {products.map((product, index) => (

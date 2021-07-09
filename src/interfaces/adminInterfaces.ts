@@ -49,7 +49,7 @@ export interface Product {
   description: string;
   price: string;
   stock: string;
-  photo?: Object;
+  photo?: string;
   createdAt?: string;
   updatedAt?: string;
   category: Category;

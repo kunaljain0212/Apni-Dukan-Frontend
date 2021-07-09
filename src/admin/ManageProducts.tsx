@@ -6,7 +6,6 @@ import { useState } from "react";
 import { isAuthenticated } from "../auth/helper";
 import { getProducts, deleteProduct } from "./helper/adminapicall";
 import { useEffect } from "react";
-import { API } from "../backend";
 import { JWT } from "../interfaces/userInterfaces";
 import { Product } from "../interfaces/adminInterfaces";
 
@@ -17,7 +16,6 @@ const ManageProducts = () => {
 
   const preload = () => {
     getProducts().then((data) => {
-      //   console.log(data);
       if (data.error) {
         console.log(data.error);
       } else {
@@ -31,7 +29,6 @@ const ManageProducts = () => {
   }, []);
 
   const deleteaProduct = (productId: string) => {
-    // console.log(productId);
     deleteProduct(productId, _id, token).then((data) => {
       if (data.error) {
         console.log(data.error);
@@ -62,13 +59,16 @@ const ManageProducts = () => {
         <div className="row">
           {products.map((product, index) => (
             <div key={index} className="col- col-md-4 mb-3 col-sm-6">
-              <Card className="text-dark" style={{height:"100%"}} key={index}>
+              <Card
+                className="text-dark"
+                style={{ height: "100%" }}
+                key={index}
+              >
                 <div className="p-2">
                   <Card.Img
-                  className="border border-info"
+                    className="border border-info"
                     variant="top"
-                    // style={{ height: "200px", width: "200px" }}
-                    src={`${API}/product/photo/${product._id}`}
+                    src={product.photo}
                   />
                 </div>
                 <Card.Body>

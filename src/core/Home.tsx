@@ -15,6 +15,7 @@ export default function Home() {
       if ((data as CustomError).error) {
         setError((data as CustomError).error);
       } else {
+        console.log(data);
         setProducts(data as Product[]);
       }
     });

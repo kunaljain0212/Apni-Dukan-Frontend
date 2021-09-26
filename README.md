@@ -13,7 +13,7 @@
 # Project Description
 
 The project aims to provide E-Commerce solution to local shopkeeprs. It has features to create, update, and delete products and categories. It also has feature for admin to manage users and orders. The application also has Razorpay payment gateway integration in demo mode.
-The application also has Dark Mode :relieved:
+The application also has Dark Mode.
 
 
 # Features Implemented

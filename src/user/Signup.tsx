@@ -46,7 +46,7 @@ function Signup() {
         }
       })
       .catch((err) => {
-        console.log("error in signup");
+        // console.log("error in signup");
       });
   };
 

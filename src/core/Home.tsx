@@ -15,7 +15,7 @@ export default function Home() {
       if ((data as CustomError).error) {
         setError((data as CustomError).error);
       } else {
-        console.log(data);
+        // console.log(data);
         setProducts(data as Product[]);
       }
     });
@@ -25,7 +25,6 @@ export default function Home() {
     preload();
   }, []);
 
-  // console.log(API);
   return (
     <Base title="Homepage" description="Welcome to Apni Dukan">
       <div className="p-4">

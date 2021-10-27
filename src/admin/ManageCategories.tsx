@@ -20,7 +20,7 @@ const ManageCategories = () => {
   const preload = () => {
     getCategories().then((data) => {
       if ((data as CustomError).error) {
-        console.log((data as CustomError).error);
+        // console.log((data as CustomError).error);
       } else {
         setCategories(data as Category[]);
       }
@@ -30,7 +30,7 @@ const ManageCategories = () => {
   const deleteaCategory = (categoryId: string) => {
     deleteCategory(categoryId, _id, token).then((data) => {
       if (data.error) {
-        console.log(data.error);
+        // console.log(data.error);
       } else {
         preload();
       }

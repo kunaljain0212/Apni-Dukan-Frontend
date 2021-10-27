@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import Base from "../core/Base";
 import { Redirect } from "react-router-dom";
 import { signin, authenticate, isAuthenticated } from "../auth/helper";
-import { JWT, SignInAPIResponse, SignInState } from "../interfaces/userInterfaces";
+import {
+  JWT,
+  SignInAPIResponse,
+  SignInState,
+} from "../interfaces/userInterfaces";
 import "../styles.css";
 import { CustomError } from "../interfaces/adminInterfaces";
 
@@ -49,7 +53,9 @@ function Signin() {
           });
         }
       })
-      .catch((err) => console.log("Sign in request failed", err));
+      .catch((err) => {
+        // console.log("Sign in request failed", err);
+      });
   };
 
   const performRedirect = () => {

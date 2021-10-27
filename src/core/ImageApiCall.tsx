@@ -6,7 +6,7 @@ interface IProps {
 }
 
 const ImageApiCall: React.FC<IProps> = ({ product }) => {
-  console.log(product);
+  // console.log(product);
   return (
     <div
       style={{ height: "300px", width: "250px" }}

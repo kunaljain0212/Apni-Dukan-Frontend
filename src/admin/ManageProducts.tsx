@@ -17,7 +17,7 @@ const ManageProducts = () => {
   const preload = () => {
     getProducts().then((data) => {
       if (data.error) {
-        console.log(data.error);
+        // console.log(data.error);
       } else {
         setProducts(data);
       }
@@ -31,7 +31,7 @@ const ManageProducts = () => {
   const deleteaProduct = (productId: string) => {
     deleteProduct(productId, _id, token).then((data) => {
       if (data.error) {
-        console.log(data.error);
+        // console.log(data.error);
       } else {
         preload();
       }
